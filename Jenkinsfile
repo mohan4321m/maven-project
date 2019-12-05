@@ -1,22 +1,16 @@
 pipeline {
     agent any
     stages{
-        stage('Init'){
-            steps{
-                echo 'Testing..'
-            }
-        }
-
         stage('Build'){
-            steps {
-                echo 'Building..'
-            }
-        }
-
-        stage('Deploy'){
-            steps {
-                echo 'Code deployed'
-            }
+            steps {  
+                sh 'localmaven clean package'
+            }    
+            post {
+                success {
+                    echo 'Now Archiving..'
+                    archiveArtifacts: '**/target/*.war'
+                }
+            }   
         }
     }
 }
